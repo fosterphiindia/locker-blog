@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block head_extra %}
+{{ form.media }}
+
+<style type="text/css">
+	.wmd-panel {
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+	}
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+{{ block.super }}
+
+<h1>Form</h1>
+
+<form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+
+{{ form|crispy}}
+<input type="submit" value="Create Post">
+
+</form>
+
+
+{% endblock %}
