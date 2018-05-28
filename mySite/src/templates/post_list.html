@@ -1,13 +1,39 @@
 {% extends "base.html" %}
 
+
+
+{% block body_extra %}
+
+<div class="row">
+<div class="col-md-5 text-center">	
+<form>
+	<div class="input-group">
+		<a href="{% url 'posts:create' %}" class="btn btn-success" role="button">Submit Your Story <i class="fas fa-pencil-alt"></i></a>
+	</div>
+	</form>
+</div>
+
+
+<div class="col-md-4 text-center">	
+</div>
+
+
+<div class="col-md-3 text-center">	
+<form method="GET" accept="">
+	<div class="input-group">
+  		<span class="input-group-addon"><i class="fas fa-search"></i></span>
+  		<input id="msg" type="text" class="form-control" name="q" placeholder="Search here...." value="{{ request.GET.q }}" />
+	</div>
+	</form>
+</div>
+</div>
+
+{% endblock %}
+
+
 {% block content %}	
 
-<h1>{{ title }}</h1>	
-
-<form method="GET" accept="">
-	<input type="text" name="q" placeholder="Search posts" value="{{ request.GET.q }}" />
-	<input type="submit" value="Search" />
-</form>
+<h1>{{ title }}</h1>
 
 <div class="row">
 {% for obj in object_list %}
@@ -35,7 +61,8 @@
 
 			<p class="content-markdown">{{ obj.content|truncatechars:100 }}</p>
 			
-			<p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+			<p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a> <a href="{{ obj.get_absolute_url }}edit" class="btn btn-primary" role="button">Edit</a> <a href="{{ obj.get_absolute_url }}delete" class="btn btn-primary" role="button">Delete</a></p>
+
 		</div>
 	</div>
 </div>

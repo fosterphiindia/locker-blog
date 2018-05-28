@@ -1,4 +1,4 @@
-#!/home/darkfist/Documents/website/mySite/bin/python
+#!/home/darkfist/Documents/locker-blog/mySite/bin/python
 
 import sys
 import getopt

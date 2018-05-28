@@ -72,50 +72,30 @@
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-sm-2 col-xs-12">
-					<div id="gtco-logo"><a href="index.html">Usable <em>.</em></a></div>
+					<div id="gtco-logo"><a href="{% url 'posts:list' %}">Home <em>.</em></a></div>
 				</div>
 				<div class="col-xs-10 text-right menu-1 main-nav">
 					<ul>
-						<li class="btn-cta"><a href="#" class="external" title="Login"><span>Login</span></a></li>
-						<li class="btn-cta"><a href="#" class="external" title="Register"><span>Register for free</span></a></li>
+						{% if not request.user.is_authenticated %}
+						<li class="btn-cta"><a href="{% url 'login' %}" class="external" title="Login"><span>Login</span></a></li>
+						<li class="btn-cta"><a href="{% url 'register' %}" class="external" title="Register"><span>Register for free</span></a></li>
+						{% else %}
+						<li class="btn-cta"><a href="{% url 'logout' %}" class="external" title="Logout"><span>Logout</span></a></li>
+						{% endif %}
 					</ul>
 				</div>
 			</div>
-			
 		</div>
 	</nav>
+
 
 
 	<div id="gtco-features" class="border-bottom" data-section="features">
 	<div class="gtco-container">
 
+			{% block body_extra %}
 
-			<div class="row">
-			
-			<div class="col-md-5 text-center">	
-			<form>
-		    	<div class="input-group">
-		      		<button type="button" class="btn btn-success">Submit Your Story <i class="fas fa-pencil-alt"></i></button>
-		    	</div>
-		  	</form>
-			</div>
-
-
-			<div class="col-md-4 text-center">	
-			</div>
-
-
-			<div class="col-md-3 text-center">	
-			<form>
-		    	<div class="input-group">
-		      		<span class="input-group-addon"><i class="fas fa-search"></i></span>
-		      		<input id="msg" type="text" class="form-control" name="msg" placeholder="Search here....">
-		    	</div>
-		  	</form>
-			</div>
-
-			</div>
-
+			{% endblock %}
 
 		<div class="row">	
 				<div class="col-md-2 col-md-offset-1 text-center">
@@ -128,21 +108,8 @@
 	{% include "messages_display.html" %}
 	<div class="container">
 
-		<ol class="breadcrumb">
-			<li><a href="{% url 'posts:list' %}">Home</a></li>
-			<!-- <li><a href="{% url 'posts:list' %}">Posts</a></li> -->
-			{% block post_detail_link %}
-			{% endblock %}
-
-			{% if not request.user.is_authenticated %}
-			<li class="pull-right"><a href="{% url 'register' %}">Register</a></li>
-			<li class="pull-right"><a href="{% url 'login' %}">Login</a></li>
-			{% else %}
-			<li class="pull-right"><a href="{% url 'logout' %}">Logout</a></li>
-			{% endif %}
-		</ol>
-
 	{% block content %} {% endblock %}
+
 	</div>
 
 

@@ -74,6 +74,11 @@ def post_content(request, slug):
 	return render(request, "post_content.html", context)
 
 def post_list(request):
+	if request.user.is_staff or request.user.is_superuser:
+		title = "Post List"
+	else:
+		title = "Discover"
+
 	queryset_list = Post.objects.active().order_by("-timestamp")
 	if request.user.is_staff or request.user.is_superuser:
 		queryset_list = Post.objects.all().order_by("-timestamp")
@@ -100,10 +105,13 @@ def post_list(request):
 
 	context = {
 		"object_list" : queryset,
-		"title" : "List",
+		"title" : title,
 		"page_request_var" : page_request_var,
 	}
-	return render(request, "post_list.html", context)
+	if request.user.is_staff or request.user.is_superuser:
+		return render(request, "post_list.html", context)
+	else:	
+		return render(request, "discover.html", context)
 
 def post_update(request, slug=None):
 	if not request.user.is_staff or not request.user.is_superuser:
