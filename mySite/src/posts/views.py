@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+import datetime
 
 # Create your views here.
 from comments.forms import CommentForm
@@ -79,9 +80,16 @@ def post_list(request):
 	else:
 		title = "Discover"
 
-	queryset_list = Post.objects.active().order_by("-timestamp")
-	if request.user.is_staff or request.user.is_superuser:
-		queryset_list = Post.objects.all().order_by("-timestamp")
+	# queryset_list = Post.objects.active().order_by("-timestamp")
+	# if request.user.is_staff or request.user.is_superuser:
+	# 	queryset_list = Post.objects.all().order_by("-timestamp")
+
+	
+	from_date = datetime.datetime.now() - datetime.timedelta(days=7)
+	queryset_list = Post.objects.active().order_by("-timestamp").filter(
+					timestamp__range=[from_date, datetime.datetime.now()]
+				)
+
 
 	query = request.GET.get('q')
 	if query:
@@ -91,7 +99,7 @@ def post_list(request):
 			Q(user__last_name__icontains=query)
 			).distinct().order_by("-timestamp")
 
-	paginator = Paginator(queryset_list, 3)
+	paginator = Paginator(queryset_list, 6)
 
 	page_request_var = "page"
 	page = request.GET.get(page_request_var)

@@ -56,7 +56,7 @@
 			</h3>
 
 			{% if obj.user.get_full_name %}
-			<p>Author : {{ obj.user.get_full_name }}</p>
+			<p><b>Author :</b> {{ obj.user.get_full_name }}</p>
 			{% endif %}
 
 			<p class="content-markdown">{{ obj.content|truncatechars:100 }}</p>

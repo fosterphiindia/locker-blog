@@ -6,28 +6,325 @@
 <h1>{{ title }}</h1>
 
 
+<br>
 
-<!-- <div class="row"> -->
-	<!-- <div class="col-sm-6 col-md-4"> -->
-		<div class="pagination">
-			<span class="step-links">
-				
-				{% if object_list.has_previous %}
-				<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
-				{% endif %}
+<div class="row">
+<!-- tabs left -->
+<div class="tabbable">
+    <ul class="nav nav-pills nav-stacked col-md-3">
+        <li class="active"><a href="#a" data-toggle="tab">Latest Stories</a></li>
+        <li><a href="#b" data-toggle="tab">Last Week Stories</a></li>
+        <li><a href="#c" data-toggle="tab">Older Stories</a></li>
+    </ul>
+    <div class="tab-content col-md-9">
+        
+        <div class="tab-pane active" id="a">
+        	<div class="row">
 
-				<span class="current">
-					Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
-				</span>
+        		{% for obj in object_list %}
+				<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					{% if obj.image %}
+					<img src="{{ obj.image.url }}" class="img-responsive" />
+					{% endif %}
+					<div class="caption">
+						<!-- {% url "posts:content" slug=obj.slug %} -->
+						<br>
+						<h3>
+							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+							<small>
+							{{ obj.timestamp|timesince }} ago
+							</small>
+						</h3>
 
-				{% if object_list.has_next %}
-				<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
-				{% endif %}
+					</div>
+				</div>
+				</div>
+				{% cycle "" "" "</div><hr><div class='row'>" %}
+	        	{% endfor %}
 
-			</span>
-		</div>
-	<!-- </div>	 -->
-<!-- </div> -->
+
+	        	<div class="pagination">
+					<span class="step-links">
+						
+						{% if object_list.has_previous %}
+						<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+						{% endif %}
+
+						<span class="current">
+							Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+						</span>
+
+						{% if object_list.has_next %}
+						<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+						{% endif %}
+
+					</span>
+				</div>
+
+            </div>    
+    	</div>
+        
+        <div class="tab-pane" id="b">
+        <div class="row">
+
+        		{% for obj in object_list %}
+				<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					{% if obj.image %}
+					<img src="{{ obj.image.url }}" class="img-responsive" />
+					{% endif %}
+					<div class="caption">
+						<!-- {% url "posts:content" slug=obj.slug %} -->
+						<br>
+						<h3>
+							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+							<small>
+							{{ obj.timestamp|timesince }} ago
+							</small>
+						</h3>
+
+						
+					</div>
+				</div>
+				</div>
+				{% cycle "" "" "</div><hr><div class='row'>" %}
+	        	{% endfor %}
+
+
+	        	<div class="pagination">
+					<span class="step-links">
+						
+						{% if object_list.has_previous %}
+						<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+						{% endif %}
+
+						<span class="current">
+							Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+						</span>
+
+						{% if object_list.has_next %}
+						<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+						{% endif %}
+
+					</span>
+				</div>
+
+            </div> 
+    	</div>
+        
+        <div class="tab-pane" id="c">
+        <div class="row">
+
+        		{% for obj in object_list %}
+				<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					{% if obj.image %}
+					<img src="{{ obj.image.url }}" class="img-responsive" />
+					{% endif %}
+					<div class="caption">
+						<!-- {% url "posts:content" slug=obj.slug %} -->
+						<br>
+						<h3>
+							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+							<small>
+							{{ obj.timestamp|timesince }} ago
+							</small>
+						</h3>
+
+					</div>
+				</div>
+				</div>
+				{% cycle "" "" "</div><hr><div class='row'>" %}
+	        	{% endfor %}
+
+
+	        	<div class="pagination">
+					<span class="step-links">
+						
+						{% if object_list.has_previous %}
+						<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+						{% endif %}
+
+						<span class="current">
+							Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+						</span>
+
+						{% if object_list.has_next %}
+						<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+						{% endif %}
+
+					</span>
+				</div>
+
+            </div> 
+    	</div>
+
+ 	   </div>
+	</div>
+	<!-- /tabs -->
+</div>
+
+
+<hr>
+<br>
+
+<div class="row">
+<!-- tabs left -->
+<div class="tabbable">
+    <ul class="nav nav-pills nav-stacked col-md-3">
+        <li class="active"><a href="#a" data-toggle="tab">Latest Stories</a></li>
+        <li><a href="#b" data-toggle="tab">Last Week Stories</a></li>
+        <li><a href="#c" data-toggle="tab">Older Stories</a></li>
+    </ul>
+    <div class="tab-content col-md-9">
+        
+        <div class="tab-pane active" id="a">
+        	<div class="row">
+
+        		{% for obj in object_list %}
+				<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					{% if obj.image %}
+					<img src="{{ obj.image.url }}" class="img-responsive" />
+					{% endif %}
+					<div class="caption">
+						<!-- {% url "posts:content" slug=obj.slug %} -->
+						<br>
+						<h3>
+							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+							<small>
+							{{ obj.timestamp|timesince }} ago
+							</small>
+						</h3>
+
+					</div>
+				</div>
+				</div>
+				{% cycle "" "" "</div><hr><div class='row'>" %}
+	        	{% endfor %}
+
+
+	        	<div class="pagination">
+					<span class="step-links">
+						
+						{% if object_list.has_previous %}
+						<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+						{% endif %}
+
+						<span class="current">
+							Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+						</span>
+
+						{% if object_list.has_next %}
+						<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+						{% endif %}
+
+					</span>
+				</div>
+
+            </div>    
+    	</div>
+        
+        <div class="tab-pane" id="b">
+        <div class="row">
+
+        		{% for obj in object_list %}
+				<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					{% if obj.image %}
+					<img src="{{ obj.image.url }}" class="img-responsive" />
+					{% endif %}
+					<div class="caption">
+						<!-- {% url "posts:content" slug=obj.slug %} -->
+						<br>
+						<h3>
+							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+							<small>
+							{{ obj.timestamp|timesince }} ago
+							</small>
+						</h3>
+
+						
+					</div>
+				</div>
+				</div>
+				{% cycle "" "" "</div><hr><div class='row'>" %}
+	        	{% endfor %}
+
+
+	        	<div class="pagination">
+					<span class="step-links">
+						
+						{% if object_list.has_previous %}
+						<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+						{% endif %}
+
+						<span class="current">
+							Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+						</span>
+
+						{% if object_list.has_next %}
+						<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+						{% endif %}
+
+					</span>
+				</div>
+
+            </div> 
+    	</div>
+        
+        <div class="tab-pane" id="c">
+        <div class="row">
+
+        		{% for obj in object_list %}
+				<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					{% if obj.image %}
+					<img src="{{ obj.image.url }}" class="img-responsive" />
+					{% endif %}
+					<div class="caption">
+						<!-- {% url "posts:content" slug=obj.slug %} -->
+						<br>
+						<h3>
+							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+							<small>
+							{{ obj.timestamp|timesince }} ago
+							</small>
+						</h3>
+
+					</div>
+				</div>
+				</div>
+				{% cycle "" "" "</div><hr><div class='row'>" %}
+	        	{% endfor %}
+
+
+	        	<div class="pagination">
+					<span class="step-links">
+						
+						{% if object_list.has_previous %}
+						<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+						{% endif %}
+
+						<span class="current">
+							Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+						</span>
+
+						{% if object_list.has_next %}
+						<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+						{% endif %}
+
+					</span>
+				</div>
+
+            </div> 
+    	</div>
+
+ 	   </div>
+	</div>
+	<!-- /tabs -->
+</div>
 
 
 {% endblock %}
