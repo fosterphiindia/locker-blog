@@ -12,13 +12,15 @@ from comments.models import Comment
 from .forms import PostForm
 from .models import Post
 
+
 def post_create(request):
-	if not request.user.is_staff or not request.user.is_superuser:
+	if not request.user.is_active or not request.user.is_staff:
 		raise Http404
 
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		instance = form.save(commit=False)
+		instance.user = request.user
 		instance.save()
 		messages.success(request, "Sucessfully Created")
 		return HttpResponseRedirect(instance.get_absolute_url())
@@ -31,13 +33,14 @@ def post_create(request):
 def post_content(request, slug):
 	instance = get_object_or_404(Post, slug=slug)
 	if instance.draft:
-		if not request.user.is_staff or not request.user.is_superuser:
+		if not request.user.is_active or not request.user.is_staff:
 			raise Http404
 
 	initial_data = {
 		"content_type" : instance.get_content_type,
 		"object_id" : instance.id
 	}
+	
 	form = CommentForm(request.POST or None, initial=initial_data)
 	if form.is_valid() and request.user.is_authenticated():
 		c_type = form.cleaned_data.get("content_type")
@@ -75,57 +78,92 @@ def post_content(request, slug):
 	return render(request, "post_content.html", context)
 
 def post_list(request):
-	if request.user.is_staff or request.user.is_superuser:
+	if request.user.is_active or request.user.is_staff:
 		title = "Post List"
 	else:
 		title = "Discover"
 
-	# queryset_list = Post.objects.active().order_by("-timestamp")
-	# if request.user.is_staff or request.user.is_superuser:
-	# 	queryset_list = Post.objects.all().order_by("-timestamp")
+	from_date1 = datetime.datetime.now() - datetime.timedelta(days=1)
+	from_date2 = datetime.datetime.now() - datetime.timedelta(days=7)
 
-	
-	from_date = datetime.datetime.now() - datetime.timedelta(days=7)
-	queryset_list = Post.objects.active().order_by("-timestamp").filter(
-					timestamp__range=[from_date, datetime.datetime.now()]
+	queryset_list_day = Post.objects.active().order_by("-timestamp").filter(
+					timestamp__range=[from_date1, datetime.datetime.now()]
 				)
 
+	queryset_list_week = Post.objects.active().order_by("-timestamp").filter(
+					timestamp__range=[from_date2, datetime.datetime.now()]
+				)
+
+	queryset_list_older = Post.objects.active().order_by("-timestamp")
 
 	query = request.GET.get('q')
 	if query:
-		queryset_list = queryset_list.filter(
+		queryset_list_day = queryset_list_day.filter(
 			Q(title__icontains=query)|
 			Q(user__first_name__icontains=query)|
 			Q(user__last_name__icontains=query)
 			).distinct().order_by("-timestamp")
 
-	paginator = Paginator(queryset_list, 6)
+		queryset_list_week = queryset_list_week.filter(
+			Q(title__icontains=query)|
+			Q(user__first_name__icontains=query)|
+			Q(user__last_name__icontains=query)
+			).distinct().order_by("-timestamp")
+
+		queryset_list_older = queryset_list_older.filter(
+			Q(title__icontains=query)|
+			Q(user__first_name__icontains=query)|
+			Q(user__last_name__icontains=query)
+			).distinct().order_by("-timestamp")
+
+	paginator1 = Paginator(queryset_list_day, 6)
+	paginator2 = Paginator(queryset_list_week, 6)
+	paginator3 = Paginator(queryset_list_older, 6)
 
 	page_request_var = "page"
 	page = request.GET.get(page_request_var)
 	
 	try:
-		queryset = paginator.page(page)
+		queryset1 = paginator1.page(page)
 	except PageNotAnInteger:
-		queryset = paginator.page(1)
+		queryset1 = paginator1.page(1)
 	except EmptyPage:
-		queryset = paginator.page(paginator.num_pages)
+		queryset1 = paginator1.page(paginator1.num_pages)
+
+	try:
+		queryset2 = paginator2.page(page)
+	except PageNotAnInteger:
+		queryset2 = paginator2.page(1)
+	except EmptyPage:
+		queryset2 = paginator2.page(paginator2.num_pages)
+		
+	try:
+		queryset3 = paginator3.page(page)
+	except PageNotAnInteger:
+		queryset3 = paginator3.page(1)
+	except EmptyPage:
+		queryset3 = paginator3.page(paginator3.num_pages)
 
 	context = {
-		"object_list" : queryset,
+		"object_list_day" : queryset1,
+		"object_list_week" : queryset2,
+		"object_list_older" : queryset3,
 		"title" : title,
 		"page_request_var" : page_request_var,
 	}
-	if request.user.is_staff or request.user.is_superuser:
+	if request.user.is_active or request.user.is_staff:
 		return render(request, "post_list.html", context)
 	else:	
 		return render(request, "discover.html", context)
 
 def post_update(request, slug=None):
-	if not request.user.is_staff or not request.user.is_superuser:
+	if not request.user.is_active or not request.user.is_staff:
 		raise Http404
 
 	instance = get_object_or_404(Post, slug=slug)
+	if not instance.user == request.user:
+		raise Http404
+		
 	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -141,10 +179,13 @@ def post_update(request, slug=None):
 	return render(request, "post_form.html", context)
 
 def post_delete(request, slug=None):
-	if not request.user.is_staff or not request.user.is_superuser:
+	if not request.user.is_active or not request.user.is_staff:
 		raise Http404
 
 	instance = get_object_or_404(Post, slug=slug)
+	if not instance.user == request.user:
+		raise Http404
+
 	instance.delete()
 	messages.success(request, "Sucessfully Deleted")
 	return redirect("posts:list")

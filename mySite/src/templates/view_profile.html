@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+
+{% block content %}	
+
+<h1>{{ title }}</h1>
+
+<br>
+
+<div class="row">	
+
+<h2>Profile of {{ request.user.first_name }} {{ request.user.last_name }}</h2>	
+<br>
+
+<div class="col-md-2 col-md-offset-1 text-center">
+    <img class = "img-circle" src="http://via.placeholder.com/300" width="120%">
+    <br>
+    <br>
+    <h4>{{ request.user.get_full_name }}</h4>
+    <p><b>Ratings</b> - * * * * *</p>
+</div>
+
+<div class="col-md-4 col-md-offset-1">
+    <p><b>Username</b> - {{ request.user.username }}</p>
+    <p><b>Email</b> -  {{ request.user.email }}</p>
+    <p><b>Location</b> - </p>
+</div>
+
+<div class="col-md-4">
+    <h4>Total Stories Written - {{ object_list|length }}</h4>
+    {% for obj in object_list %}
+    * <a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a><br>
+    {% endfor %}
+    <div class="pagination">
+		<span class="step-links">
+			
+			{% if object_list.has_previous %}
+			<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+			</span>
+
+			{% if object_list.has_next %}
+			<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+			{% endif %}
+
+		</span>
+	</div>
+</div>
+
+</div>
+
+{% endblock %}

@@ -4,10 +4,14 @@ from django.contrib.auth import (
 		login,
 		logout
 	)
-from django.shortcuts import render, redirect
+
+from django.core.paginator import Paginator, PageNotAnInteger
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from .forms import UserLoginForm, UserRegisterForm
+from posts.models import Post
+
 
 
 def login_view(request):
@@ -26,6 +30,10 @@ def login_view(request):
 
 	return render(request, "form.html", {"form":form, "title":title})
 
+def logout_view(request):
+	logout(request)
+	return redirect("/posts/")
+
 def register_view(request):
 	print(request.user.is_authenticated())
 	next = request.GET.get('next')
@@ -35,6 +43,7 @@ def register_view(request):
 	if form.is_valid():
 		user = form.save(commit=False)
 		password = form.cleaned_data.get('password')
+		# user.is_staff = True
 		user.set_password(password)
 		user.save()
 
@@ -52,6 +61,30 @@ def register_view(request):
 
 	return render(request, "form.html", context)
 
-def logout_view(request):
-	logout(request)
-	return redirect("/posts/")
+def view_profile(request):
+	queryset_list = Post.objects.active().order_by("-timestamp").filter(user=request.user)
+	query = request.GET.get('q')
+	if query:
+		queryset_list = queryset_list.filter(
+			Q(title__icontains=query)|
+			Q(user__first_name__icontains=query)|
+			Q(user__last_name__icontains=query)
+			).distinct().order_by("-timestamp")
+
+	paginator = Paginator(queryset_list, 6)
+	page_request_var = "page"
+	page = request.GET.get(page_request_var)
+
+	try:
+		queryset = paginator.page(page)
+	except PageNotAnInteger:
+		queryset = paginator.page(1)
+	except EmptyPage:
+		queryset = paginator.page(paginator.num_pages)
+
+	title = "User Profile"
+	context = {
+		"title" : title,
+		"object_list" : queryset,
+	}
+	return render(request, "view_profile.html", context)

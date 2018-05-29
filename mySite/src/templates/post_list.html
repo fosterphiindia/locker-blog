@@ -36,7 +36,7 @@
 <h1>{{ title }}</h1>
 
 <div class="row">
-{% for obj in object_list %}
+{% for obj in object_list_older %}
 
 <div class="col-sm-6 col-md-4">
 	<div class="thumbnail">
@@ -61,7 +61,13 @@
 
 			<p class="content-markdown">{{ obj.content|truncatechars:100 }}</p>
 			
-			<p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a> <a href="{{ obj.get_absolute_url }}edit" class="btn btn-primary" role="button">Edit</a> <a href="{{ obj.get_absolute_url }}delete" class="btn btn-primary" role="button">Delete</a></p>
+			<p class="text-center">
+				<a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a> 
+				{% if obj.user == request.user %}
+				<a href="{{ obj.get_absolute_url }}edit" class="btn btn-primary" role="button">Edit</a> 
+				<a href="{{ obj.get_absolute_url }}delete" class="btn btn-primary" role="button">Delete</a>
+				{% endif %}
+			</p>
 
 		</div>
 	</div>
@@ -76,16 +82,16 @@
 		<div class="pagination">
 			<span class="step-links">
 				
-				{% if object_list.has_previous %}
-				<a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+				{% if object_list_older.has_previous %}
+				<a href="?page={{ object_list_older.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
 				{% endif %}
 
 				<span class="current">
-					Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+					Page {{ object_list_older.number }} of {{ object_list_older.paginator.num_pages }}.
 				</span>
 
-				{% if object_list.has_next %}
-				<a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+				{% if object_list_older.has_next %}
+				<a href="?page={{ object_list_older.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
 				{% endif %}
 
 			</span>
