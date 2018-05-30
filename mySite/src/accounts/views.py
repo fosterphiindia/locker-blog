@@ -4,9 +4,9 @@ from django.contrib.auth import (
 		login,
 		logout
 	)
-
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User, Group
 
 # Create your views here.
 from .forms import UserLoginForm, UserRegisterForm
@@ -43,9 +43,14 @@ def register_view(request):
 	if form.is_valid():
 		user = form.save(commit=False)
 		password = form.cleaned_data.get('password')
-		# user.is_staff = True
+		user.is_staff = True
 		user.set_password(password)
 		user.save()
+		group = Group.objects.get(name='registered_users')
+		user.groups.add(group)
+		# user.groups.add(Group.objects.get(name='registered_users'))
+		# user = kwargs["instance"]
+	# if kwargs["created"]:
 
 		new_user = authenticate(username=user.username, password=password)
 		login(request, new_user)
@@ -60,6 +65,7 @@ def register_view(request):
 	}
 
 	return render(request, "form.html", context)
+
 
 def view_profile(request):
 	queryset_list = Post.objects.active().order_by("-timestamp").filter(user=request.user)
@@ -88,3 +94,32 @@ def view_profile(request):
 		"object_list" : queryset,
 	}
 	return render(request, "view_profile.html", context)
+
+
+def edit_profile(request):
+	# queryset_list = Post.objects.active().order_by("-timestamp").filter(user=request.user)
+	# query = request.GET.get('q')
+	# if query:
+	# 	queryset_list = queryset_list.filter(
+	# 		Q(title__icontains=query)|
+	# 		Q(user__first_name__icontains=query)|
+	# 		Q(user__last_name__icontains=query)
+	# 		).distinct().order_by("-timestamp")
+
+	# paginator = Paginator(queryset_list, 6)
+	# page_request_var = "page"
+	# page = request.GET.get(page_request_var)
+
+	# try:
+	# 	queryset = paginator.page(page)
+	# except PageNotAnInteger:
+	# 	queryset = paginator.page(1)
+	# except EmptyPage:
+	# 	queryset = paginator.page(paginator.num_pages)
+
+	# title = "User Profile"
+	# context = {
+	# 	"title" : title,
+	# 	"object_list" : queryset,
+	# }
+	return render(request, "edit_profile.html", {})

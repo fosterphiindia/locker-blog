@@ -29,7 +29,12 @@
 {% endif %}
 
 <div class="content-markdown">
+
+{% if instance.video %}
+{{ instance.video }}
+{% endif %}
 {{ instance.content }} 
+
 </div>
 
 <hr>

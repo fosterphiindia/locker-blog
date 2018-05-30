@@ -19,7 +19,7 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from accounts.views import (login_view, register_view, logout_view, view_profile)
+from accounts.views import (login_view, register_view, logout_view, view_profile, edit_profile)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^login/', login_view, name="login"),
     url(r'^logout/', logout_view, name="logout"),
     url(r'^profile/', view_profile, name="profile"),
+    url(r'^edit-profile/', edit_profile, name="edit_profile"),
 ]
 
 if settings.DEBUG:

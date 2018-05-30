@@ -1,28 +1,6 @@
 {% extends "base.html" %}
 
 
-
-{% block body_extra %}
-
-<div class="row">
-
-<div class="col-md-9 text-center">	
-</div>
-
-
-<div class="col-md-3 text-center">	
-	<form method="GET" accept="">
-	<div class="input-group">
-  		<a href="{% url 'edit_profile' %}" class="btn btn-success" role="button">Edit Profile &nbsp;&nbsp; <i class="fas fa-pencil-alt"></i></a>
-	</div>
-	</form>
-</div>
-</div>
-
-{% endblock %}
-
-
-
 {% block content %}	
 
 <h1>{{ title }}</h1>
