@@ -1,3 +1,4 @@
+from pagedown.widgets import PagedownWidget
 from django import forms
 from django.contrib.auth import (
 		authenticate,
@@ -5,6 +6,8 @@ from django.contrib.auth import (
 		login,
 		logout
 	)
+
+from .models import Account
 
 User = get_user_model()
 
@@ -68,3 +71,22 @@ class UserRegisterForm(forms.ModelForm):
 	# 		raise forms.ValidationError("This email has already been registered")
 			
 	# 	return email
+
+
+class EditProfileForm(forms.ModelForm):
+	# title = forms.CharField(widget=forms.HiddenInput)
+	# first_name = forms.CharField(widget=forms.HiddenInput)
+	# last_name = forms.CharField(widget=forms.HiddenInput)
+	# location = forms.CharField(widget=forms.HiddenInput)
+	# email = forms.CharField(widget=forms.HiddenInput)
+	# image = forms.ImageField(widget=forms.HiddenInput)
+	class Meta:
+		model = Account
+		fields = [
+			"title",
+			"first_name",
+			"last_name",
+			"image",
+			"email",
+			"location",
+		]

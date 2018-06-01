@@ -1,16 +1,27 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 
 {% block content %}	
 
-<h1>{{ title }}</h1>
+<h1></h1>
 
 <br>
+<h1>Form</h1>
+
+<form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
+
+{{ form|crispy}}
+<input type="submit" value="Create Post">
+
+</form>
+
+
 
 <div class="row">
 
-<h2>Profile of {{ request.user.first_name }} {{ request.user.last_name }}</h2>	
-<br>
+<!-- <h2>Profile of {{ request.user.first_name }} {{ request.user.last_name }}</h2>	 -->
+<br><br>
 
 <div class="col-md-2 col-md-offset-1 text-center">
     <img class = "img-circle" src="http://via.placeholder.com/300" width="120%">
