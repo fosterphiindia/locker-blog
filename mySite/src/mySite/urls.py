@@ -19,7 +19,9 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from accounts.views import (login_view, register_view, logout_view, view_profile, edit_profile, save_user)
+from accounts.views import (login_view, register_view, logout_view,
+                            view_profile, edit_profile, save_user,
+                            forget_password)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,9 +30,11 @@ urlpatterns = [
     url(r'^register/', register_view, name="register"),
     url(r'^login/', login_view, name="login"),
     url(r'^logout/', logout_view, name="logout"),
+    url(r'^oauth/', include('social_django.urls', namespace='social')), 
     url(r'^profile/', view_profile, name="profile"),
     url(r'^edit-profile/', edit_profile, name="edit_profile"),
     url(r'^save-user/', save_user, name="save_user"),
+    url(r'^forget-password/', forget_password, name="forget_password"),
 ]
 
 if settings.DEBUG:

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.middleware import csrf
 from django.contrib.auth import (
@@ -7,6 +8,7 @@ from django.contrib.auth import (
 		logout
 	)
 from django.core.paginator import Paginator, PageNotAnInteger
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
@@ -50,7 +52,7 @@ def save_user(request):
 		csrf.get_token(request)
 		instance.save()
 
-	return render(request, "form.html", {"form":form})	
+	return render(request, "form.html", {"form":form})
 
 def register_view(request):
 	print(request.user.is_authenticated())
@@ -66,11 +68,19 @@ def register_view(request):
 		user.save()
 		group = Group.objects.get(name='registered_users')
 		user.groups.add(group)
+
+		subject = 'Test Subject'
+		message = 'Test Message'
+		from_email = settings.EMAIL_HOST_USER
+		to_list = [user.email]
+
+		send_mail(subject, message, from_email, to_list, fail_silently=True)
+
 		
 		new_user = authenticate(username=user.username, password=password)
 		login(request, new_user)
 		save_user(request)
-		
+
 		if next:
 			return redirect(next)
 		return redirect("/posts/")
@@ -135,3 +145,12 @@ def edit_profile(request, user=None):
 	}
 
 	return render(request, "edit_profile.html", context)
+
+def forget_password(email):
+	if Account.objects.filter(email=email).exists():
+		Account.objects.update(token='some_value')
+
+	return redirect("/posts/")
+
+def reset_password(request, user=None):
+	instance = get_object_or_404(Account, user=request.user)	

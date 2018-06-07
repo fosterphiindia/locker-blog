@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
@@ -12,11 +13,8 @@ from comments.models import Comment
 from .forms import PostForm
 from .models import Post
 
-
+@login_required
 def post_create(request):
-	if not request.user.is_active or not request.user.is_staff:
-		raise Http404
-
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -31,10 +29,8 @@ def post_create(request):
 	return render(request, "post_form.html", context)
 
 
+@login_required
 def post_update(request, slug=None):
-	if not request.user.is_active or not request.user.is_staff:
-		raise Http404
-
 	instance = get_object_or_404(Post, slug=slug)
 	if not instance.user == request.user:
 		raise Http404
@@ -53,10 +49,9 @@ def post_update(request, slug=None):
 	}
 	return render(request, "post_form.html", context)
 
-def post_delete(request, slug=None):
-	if not request.user.is_active or not request.user.is_staff:
-		raise Http404
 
+@login_required
+def post_delete(request, slug=None):
 	instance = get_object_or_404(Post, slug=slug)
 	if not instance.user == request.user:
 		raise Http404

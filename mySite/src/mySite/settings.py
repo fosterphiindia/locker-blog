@@ -10,6 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'theultranoob3@gmail.com'
+EMAIL_HOST_PASSWORD = 'therealmadridw1@Q'
+EMAIL_PORT = 587
+
+
+
 import os
 
 
@@ -40,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #third party apps
+    'social_django',
     'accounts',
     'crispy_forms',
     # 'markdown_deux',
@@ -61,10 +71,57 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
+
 LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/posts/'
 ROOT_URLCONF = 'mySite.urls'
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social.backends.linkedin.LinkedinOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_TWITTER_KEY = 'O9e0hDOsA3JxiMCNdDngEtcoM'
+SOCIAL_AUTH_TWITTER_SECRET = 'psl3OvC7xEAtfXQ8chGZ798ggLwMnNI0Qs8a9YaP9jHv3JFWZ3'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '175778479762558'
+SOCIAL_AUTH_FACEBOOK_SECRET = '3f5d0a1044d8df378c83b54d212f207c'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'locale': 'ru_RU',
+  'fields': 'id, name, email, age_range'
+}
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='911010166991-p8rs3sd5ujhhos6sqg4clt3cr6qm5qq4.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'KSQYxyg34xTfW-tNpFyj0jsi'
+
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = 'update me'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'update me'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+
+    'accounts.pipeline.save_profile',
+)
+
 
 TEMPLATES = [
     {
@@ -77,6 +134,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },

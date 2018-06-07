@@ -17,6 +17,7 @@ class Account(models.Model):
 	last_name = models.CharField(max_length=120, null=True, blank=True)
 	email = models.CharField(max_length=120, null=True, blank=True)
 	location = models.CharField(max_length=120, null=True, blank=True)
+	token = models.CharField(max_length=320, null=True, blank=True)
 	image = models.ImageField(upload_to=upload_location,
 		null=True,
 		blank=True,

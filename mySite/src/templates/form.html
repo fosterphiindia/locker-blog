@@ -7,7 +7,16 @@
 {{ block.super }}
 
 <div class="col-sm-6 col-sm-offset-3">
-<h1>{{ title }}</h1>
+
+<a class="btn btn-block btn-google" href="{% url 'social:begin' 'google-oauth2' %}" title="Login"><span class="fab fa-google"> Login with Google</span></a>
+<a class="btn btn-block btn-facebook" href="{% url 'social:begin' 'facebook' %}" title="Login"><span class="fab fa-facebook"> Login with Facebook</span></a>
+<a class="btn btn-block btn-twitter" href="{% url 'social:begin' 'twitter' %}" title="Login"><span class="fab fa-twitter"> Login with Twitter</span></a>
+<a class="btn btn-block btn-linkedin" href="{% url 'social:begin' 'linkedin-oauth2' %}" title="Login"><span class="fab fa-linkedin"> Login with LinkedIn</span></a>
+
+<br>
+<center><h1>------ OR ------</h1></center>
+<br>
+<h2>{{ title }} with Email</h2>
 <hr>
 
 <form method="POST" action="" enctype="multipart/form-data"> {% csrf_token %}
