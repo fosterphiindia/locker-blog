@@ -21,7 +21,7 @@
 <div class="col-md-3 text-center">	
 <form method="GET" accept="">
 	<div class="input-group">
-  		<span class="input-group-addon"><i class="fas fa-search"></i></span>
+  		<span class="input-group-addon"><i class="fa fa-search"></i></span>
   		<input id="msg" type="text" class="form-control" name="q" placeholder="Search here...." value="{{ request.GET.q }}" />
 	</div>
 	</form>
@@ -38,8 +38,8 @@
 <div class="row">
 {% for obj in object_list_older %}
 
-<div class="col-sm-6 col-md-4">
-	<div class="thumbnail">
+<div class="col-sm-6 col-md-3">
+	<div>
 		{% if obj.image %}
 		<img src="{{ obj.image.url }}" class="img-responsive" />
 		{% endif %}

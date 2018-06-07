@@ -20,25 +20,18 @@
         
         <div class="tab-pane active" id="a">
         	<div class="row">
-
         		{% for obj in object_list_day %}
-				<div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
+				<div class="col-md-4">
 					{% if obj.image %}
 					<img src="{{ obj.image.url }}" class="img-responsive" />
 					{% endif %}
-					<div class="caption">
-						<!-- {% url "posts:content" slug=obj.slug %} -->
-						<br>
-						<h3>
-							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
-							<small>
-							{{ obj.timestamp|timesince }} ago
-							</small>
-						</h3>
-
-					</div>
-				</div>
+					<!-- {% url "posts:content" slug=obj.slug %} -->
+					<h3>
+						<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+						<small>
+						{{ obj.timestamp|timesince }} ago
+						</small>
+					</h3>
 				</div>
 				{% cycle "" "" "</div><hr><div class='row'>" %}
 	        	{% endfor %}
@@ -69,24 +62,17 @@
         <div class="row">
 
         		{% for obj in object_list_week %}
-				<div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
+				<div class="col-md-4">
 					{% if obj.image %}
 					<img src="{{ obj.image.url }}" class="img-responsive" />
 					{% endif %}
-					<div class="caption">
-						<!-- {% url "posts:content" slug=obj.slug %} -->
-						<br>
-						<h3>
-							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
-							<small>
-							{{ obj.timestamp|timesince }} ago
-							</small>
-						</h3>
-
-						
-					</div>
-				</div>
+					<!-- {% url "posts:content" slug=obj.slug %} -->
+					<h3>
+						<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+						<small>
+						{{ obj.timestamp|timesince }} ago
+						</small>
+					</h3>
 				</div>
 				{% cycle "" "" "</div><hr><div class='row'>" %}
 	        	{% endfor %}
@@ -117,23 +103,17 @@
         <div class="row">
 
         		{% for obj in object_list_older %}
-				<div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
+				<div class="col-md-4">
 					{% if obj.image %}
 					<img src="{{ obj.image.url }}" class="img-responsive" />
 					{% endif %}
-					<div class="caption">
-						<!-- {% url "posts:content" slug=obj.slug %} -->
-						<br>
-						<h3>
-							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
-							<small>
-							{{ obj.timestamp|timesince }} ago
-							</small>
-						</h3>
-
-					</div>
-				</div>
+					<!-- {% url "posts:content" slug=obj.slug %} -->
+					<h3>
+						<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+						<small>
+						{{ obj.timestamp|timesince }} ago
+						</small>
+					</h3>
 				</div>
 				{% cycle "" "" "</div><hr><div class='row'>" %}
 	        	{% endfor %}
@@ -173,12 +153,12 @@
 <!-- tabs left -->
 <div class="tabbable">
     <ul class="nav nav-pills nav-stacked col-md-3">
-        <li class="active"><a href="#a" data-toggle="tab">Top Users</a></li>
-        <li><a href="#b" data-toggle="tab">All Users</a></li>
+        <li class="active"><a href="#d" data-toggle="tab">Top Users</a></li>
+        <li><a href="#e" data-toggle="tab">All Users</a></li>
     </ul>
     <div class="tab-content col-md-9">
         
-        <div class="tab-pane active" id="a">
+        <div class="tab-pane active" id="d">
         	<div class="row">
 
 			<h2>Profile of {{ request.user.first_name }} {{ request.user.last_name }}</h2>	
@@ -227,28 +207,21 @@
             </div>    
     	</div>
         
-        <div class="tab-pane" id="b">
+        <div class="tab-pane" id="e">
         <div class="row">
 
         		{% for obj in object_list %}
-				<div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
+				<div class="col-md-4">
 					{% if obj.image %}
 					<img src="{{ obj.image.url }}" class="img-responsive" />
 					{% endif %}
-					<div class="caption">
-						<!-- {% url "posts:content" slug=obj.slug %} -->
-						<br>
-						<h3>
-							<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
-							<small>
-							{{ obj.timestamp|timesince }} ago
-							</small>
-						</h3>
-
-						
-					</div>
-				</div>
+					<!-- {% url "posts:content" slug=obj.slug %} -->
+					<h3>
+						<a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a> 
+						<small>
+						{{ obj.timestamp|timesince }} ago
+						</small>
+					</h3>
 				</div>
 				{% cycle "" "" "</div><hr><div class='row'>" %}
 	        	{% endfor %}
