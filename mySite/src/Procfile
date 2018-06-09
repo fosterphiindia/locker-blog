@@ -1,1 +1,1 @@
-web: gunicorn vault.wsgi
+web: gunicorn mySite.wsgi --log-file -

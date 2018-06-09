@@ -34,7 +34,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '39%m5ad(1sglfdx%ri_g0bs7dm(i)cxv&1e%ukpk9v)qi35gyi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -74,12 +74,13 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
-LOGIN_REDIRECT_URL = '/posts/'
+LOGIN_REDIRECT_URL = '/'
 ROOT_URLCONF = 'mySite.urls'
 
 
@@ -201,13 +202,14 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     # '/var/www/static/',
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
-
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")

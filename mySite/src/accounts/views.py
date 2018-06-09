@@ -31,13 +31,13 @@ def login_view(request):
 		login(request, user)
 		if next:
 			return redirect(next)
-		return redirect("/posts/")
+		return redirect("/")
 
 	return render(request, "form.html", {"form":form, "title":title})
 
 def logout_view(request):
 	logout(request)
-	return redirect("/posts/")
+	return redirect("/")
 
 def save_user(request):
 	form = EditProfileForm(request.POST or None, request.FILES or None)
@@ -74,7 +74,7 @@ def register_view(request):
 		from_email = settings.EMAIL_HOST_USER
 		to_list = [user.email]
 
-		send_mail(subject, message, from_email, to_list, fail_silently=True)
+		send_mail(subject, message, from_email, to_list, fail_silently=False)
 
 		
 		new_user = authenticate(username=user.username, password=password)
@@ -83,7 +83,7 @@ def register_view(request):
 
 		if next:
 			return redirect(next)
-		return redirect("/posts/")
+		return redirect("/")
 
 	context = {
 		"form" : form,
@@ -150,7 +150,7 @@ def forget_password(email):
 	if Account.objects.filter(email=email).exists():
 		Account.objects.update(token='some_value')
 
-	return redirect("/posts/")
+	return redirect("/")
 
 def reset_password(request, user=None):
 	instance = get_object_or_404(Account, user=request.user)	
