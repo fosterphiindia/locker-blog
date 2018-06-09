@@ -56,14 +56,14 @@
 	{% for comment in comments %}
 		<blockquote>
 			<p>{{ comment.content }}</p>
-			<footer>By {{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} | {% endif %} <a class="comment-reply-btn" href="#">Reply</a> | <a class="" href="{{ comment.get_absolute_url }}">Thread</a></footer>
-
-			<div class="comment-reply" style="display: none;">
+			<small>By {{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} | {% endif %} <a class="comment-reply-btn" href="#">Reply</a> | <a class="" href="{{ comment.get_absolute_url }}">Thread</a></small>
+			<br>
+			<div class="comment-reply">
 				{% for child_comment in comment.children %}
 				<hr>	
 				<blockquote>
 					<p>{{ child_comment.content }}</p>
-					<footer>By {{ child_comment.user }} | {{ child_comment.timestamp|timesince }} ago</footer>
+					<small>By {{ child_comment.user }} | {{ child_comment.timestamp|timesince }} ago</small>
 				</blockquote>
 				{% endfor %}
 
@@ -76,7 +76,7 @@
 				</form>
 
 				{% else %}
-				<p>You must login to comment</p>
+				<p>You must login to reply</p>
 				{% endif %}
 
 			</div>
