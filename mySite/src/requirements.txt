@@ -8,7 +8,7 @@ django-markdown-deux==1.0.5
 django-pagedown==1.0.4
 gunicorn==19.8.1
 idna==2.6
-markdown2==2.3.5
+markdown2==2.4.0
 oauthlib==2.1.0
 Pillow==5.1.0
 psycopg2==2.7.4
